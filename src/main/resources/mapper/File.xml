@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tistory.ospace.api.repository.FileRepository">
+    <sql id="selectQuery">
+        SELECT
+            `id`,
+            `org_filename`,
+            `filepath`,
+            `extension`,
+            `type`,
+            `size`,
+            `create_date`,
+            `creator`
+        FROM `tc_file`
+    </sql>
+
+    <select id="countBy" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `tc_file`
+        <where>
+            <if test="null != search and null != search.keyword and '' != search.keyword">
+                AND `org_filename` LIKE CONCAT('%',#{search.keyword},'%')
+            </if>
+        </where>
+    </select>
+    
+    <select id="findAllBy" resultType="File">
+	    <include refid="selectQuery" />
+		<where>
+            <if test="null != search and null != search.keyword and '' != search.keyword">
+                AND `org_filename` LIKE CONCAT('%',#{search.keyword},'%')
+            </if>
+        </where>
+        ORDER BY `create_date` DESC
+    </select>
+    
+    <select id="findById" resultType="File">
+        <include refid="selectQuery" />
+        WHERE id=#{id}
+    </select>
+    
+    <select id="findBy" resultType="File">
+        <include refid="selectQuery" />
+        <where>
+            <if test="null != id">
+                AND `id` = #{id}
+            </if>
+            <if test="null != orgFilename">
+                AND `org_filename` = #{orgFilename}
+            </if>
+            <if test="null != extension">
+                AND `extension` = #{extension}
+            </if>
+            <if test="null != type">
+                AND `type` = #{type}
+            </if>
+        </where>
+        LIMIT 1
+    </select>
+    
+    <select id="findAllIn" resultType="File">
+        <include refid="selectQuery" />
+        WHERE id IN
+        <foreach collection="ids" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+    
+	<insert id="insert">
+		INSERT INTO `tc_file` (
+			`id`,
+			`org_filename`,
+			`filepath`,
+			`extension`,
+			`type`,
+			`size`,
+			`creator`
+		) VALUES (
+			#{id},
+			#{orgFilename},
+			#{filepath},
+			#{extension},
+			#{type},
+			#{size},
+			#{creator}
+		)
+	</insert> 
+	
+	<delete id="deleteById">
+	DELETE FROM `tc_file` WHERE `id` = #{id}
+	</delete>
+	
+</mapper>  

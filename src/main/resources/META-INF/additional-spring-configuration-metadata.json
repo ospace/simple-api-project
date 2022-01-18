@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "simpleapi.file.store-path",
+  "type": "java.lang.String",
+  "description": "파일 저장위치 'simpleapi.file.store-path'"
+}]}
