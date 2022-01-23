@@ -1,35 +1,17 @@
 package com.tistory.ospace.api.util;
 
-import java.util.List;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.tistory.ospace.api.controller.model.SearchKeyword;
 import com.tistory.ospace.api.repository.dto.AuthDto;
 import com.tistory.ospace.api.repository.dto.UserDto;
 import com.tistory.ospace.common.BaseDto;
+import com.tistory.ospace.paging.base.PagingUtils;
 
 
 public class BaseUtils {
 	
-    public static void offsetPage(SearchKeyword search) {
-        Integer offset = search.getOffset();
-        Integer limit = search.getLimit();
-//        String orderBy = search.getOrderBy();
-//        if (!StringUtils.isEmpty(orderBy)) {
-//            PageHelper.orderBy(orderBy);
-//        }
-        PageHelper.offsetPage(null == offset ? 0 : offset, null == limit ? 0 : limit);
-    }
-    
-    public static <T> long getTotal(List<T> data) {
-        if (null == data) return 0;
-        return data instanceof Page ? ((Page<T>)data).getTotal() : data.size();
-    }
-    
 	public static String getPrincipal() {
 		if(SecurityContextHolder.getContext().getAuthentication() == null){
 			return "GUS";
@@ -72,5 +54,9 @@ public class BaseUtils {
 		
 		Integer creator = getUserId();
 		dto.setCreator(creator);
+	}
+
+	public static void offsetPage(SearchKeyword searchKeyword) {
+		PagingUtils.setRowBounds(searchKeyword.getOffset(), searchKeyword.getLimit());
 	}
 }

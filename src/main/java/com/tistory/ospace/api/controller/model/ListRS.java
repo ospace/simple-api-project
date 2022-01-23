@@ -5,9 +5,9 @@ import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.tistory.ospace.api.util.BaseUtils;
 import com.tistory.ospace.common.BaseModel;
 import com.tistory.ospace.common.DataUtils;
+import com.tistory.ospace.paging.base.PagingUtils;
 
 @JsonInclude(Include.NON_NULL)
 public class ListRS<T> extends BaseModel {
@@ -23,7 +23,7 @@ public class ListRS<T> extends BaseModel {
 	}
 	
 	public static <T, R> ListRS<R> of(List<T> data, Function<T, R> converter) {
-	    long total = BaseUtils.getTotal(data);
+	    long total = PagingUtils.ofTotal(data);
 	    
 	    return of(DataUtils.map(data, converter), total);
     }
