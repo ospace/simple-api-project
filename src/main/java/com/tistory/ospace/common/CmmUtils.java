@@ -15,13 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -56,12 +50,6 @@ public class CmmUtils {
 	    } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
 	        return e.getMessage();
 	    }
-	}
-	
-	private static final MappingJackson2HttpMessageConverter httpConverter = new MappingJackson2HttpMessageConverter(jsonSimpleObjectMapper);
-	
-	public static <T> void writeJson(T from, HttpServletResponse to) throws HttpMessageNotWritableException, IOException {
-		httpConverter.write(from, MediaType.APPLICATION_JSON, new ServletServerHttpResponse(to));
 	}
 	
 	public static JsonNode toJsonObject(String jsonStr) {

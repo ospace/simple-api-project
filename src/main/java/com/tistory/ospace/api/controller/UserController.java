@@ -25,7 +25,7 @@ import com.tistory.ospace.api.controller.model.User;
 import com.tistory.ospace.api.repository.dto.SearchDto;
 import com.tistory.ospace.api.repository.dto.UserDto;
 import com.tistory.ospace.api.service.UserService;
-import com.tistory.ospace.api.util.BaseUtils;
+import com.tistory.ospace.api.util.SpringUtils;
 
 
 @RestController
@@ -47,7 +47,7 @@ public class UserController{
 		logger.info("get begin: searchKeyword[{}]", searchKeyword);
 		
 		SearchDto search = ModelUtils.convert(searchKeyword, new SearchDto());
-		BaseUtils.offsetPage(searchKeyword);
+		SpringUtils.offsetPage(searchKeyword);
 		List<UserDto> res = userService.search(search);
 		ListRS<User> ret = ListRS.of(res, it->ModelUtils.convert(it, new User()));
 		

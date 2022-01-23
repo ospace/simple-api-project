@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tistory.ospace.api.exception.DataIntegrityException;
 import com.tistory.ospace.api.repository.FileRepository;
 import com.tistory.ospace.api.repository.dto.FileDto;
-import com.tistory.ospace.api.util.BaseUtils;
+import com.tistory.ospace.api.util.SpringUtils;
 import com.tistory.ospace.common.CmmUtils;
 import com.tistory.ospace.common.DateUtils;
 import com.tistory.ospace.common.FileUtils;
@@ -55,7 +55,7 @@ public class FileService {
 			throw new RuntimeException(file.getOrgFilename() + " upload failed: ", e);
 		}
 		
-		BaseUtils.applyCreator(file);
+		SpringUtils.applyUser(file);
 		fileRepo.insert(file);
 		
 		return file;

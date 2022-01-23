@@ -14,7 +14,7 @@ import com.tistory.ospace.api.exception.DuplicateException;
 import com.tistory.ospace.api.repository.UserRepository;
 import com.tistory.ospace.api.repository.dto.SearchDto;
 import com.tistory.ospace.api.repository.dto.UserDto;
-import com.tistory.ospace.api.util.BaseUtils;
+import com.tistory.ospace.api.util.SpringUtils;
 import com.tistory.ospace.common.DataUtils;
 import com.tistory.ospace.common.StrUtils;
 
@@ -67,15 +67,15 @@ public class UserService{
 		}
 		
 		if(user.getId() != null) {
-			user.setModifier(BaseUtils.getUserId());
+			SpringUtils.applyUser(user);
 			user.setLoginId(null);
 			userRepo.update(user);
 		} else {
 			if(null != userRepo.findByLoginId(user.getLoginId())) {
 				throw new DuplicateException("아이디중복:"+user.getLoginId());
 			}
-			
-			user.setCreator(BaseUtils.getUserId());
+
+			SpringUtils.applyUser(user);
 			userRepo.insert(user);
 		}
 	}

@@ -15,7 +15,7 @@ import com.tistory.ospace.api.exception.DataIntegrityException;
 import com.tistory.ospace.api.repository.CodeRepository;
 import com.tistory.ospace.api.repository.dto.CodeDto;
 import com.tistory.ospace.api.repository.dto.SearchDto;
-import com.tistory.ospace.api.util.BaseUtils;
+import com.tistory.ospace.api.util.SpringUtils;
 import com.tistory.ospace.common.DataUtils;
 import com.tistory.ospace.common.StrUtils;
 
@@ -99,7 +99,7 @@ public class CodeService {
 		}
 		
 		code.setCode(nextCode);
-		code.setCreator(BaseUtils.getUserId());
+		SpringUtils.applyUser(code);
 		codeRepo.insertCode(code);
 		
 		logger.debug("insertCode end: code[{}] runtime[{} msec]", code, System.currentTimeMillis()-runtime);
@@ -125,7 +125,7 @@ public class CodeService {
 		if(null != targetCode) {
 			switchOrder(code, targetCode);
 		} else {
-			code.setModifier(BaseUtils.getUserId());
+			SpringUtils.applyUser(code);
 			codeRepo.updateCode(code);
 		}
 	}
@@ -164,7 +164,8 @@ public class CodeService {
 		} catch(DataIntegrityViolationException ex) {
 			throw new DataIntegrityException("카테고리삭제: code["+code+"]", ex);
 		}
-		codeObj.setModifier(BaseUtils.getUserId());
+		
+		SpringUtils.applyUser(codeObj);
 		decreaseOrder(codeObj);
 	}
 	
@@ -199,8 +200,8 @@ public class CodeService {
 		l.setOrder(r.getOrder());
 		r.setOrder(order);
 		
-		l.setModifier(BaseUtils.getUserId());
-		r.setModifier(BaseUtils.getUserId());
+		SpringUtils.applyUser(l);
+		SpringUtils.applyUser(r);
 		
 		codeRepo.updateCode(l);
 		codeRepo.updateCode(r);

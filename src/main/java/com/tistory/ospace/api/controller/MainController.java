@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tistory.ospace.api.controller.model.ModelUtils;
 import com.tistory.ospace.api.controller.model.User;
-import com.tistory.ospace.api.util.BaseUtils;
+import com.tistory.ospace.api.util.SpringUtils;
 
 
 @Controller
@@ -22,7 +22,7 @@ public class MainController {
     @ResponseBody
     public User me() {
 		logger.info("me begin:");
-		User ret = ModelUtils.convert(BaseUtils.getUser(), new User());
+		User ret = ModelUtils.convert(SpringUtils.getUser(), new User());
 		logger.info("me end: ret[{}]", ret);
 		
 		return ret;

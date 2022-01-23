@@ -40,7 +40,7 @@ import com.tistory.ospace.api.controller.model.User;
 import com.tistory.ospace.api.repository.dto.AuthDto;
 import com.tistory.ospace.api.repository.dto.UserDto;
 import com.tistory.ospace.api.service.AuthService;
-import com.tistory.ospace.common.CmmUtils;
+import com.tistory.ospace.api.util.SpringUtils;
 import com.tistory.ospace.common.Response;
 
 
@@ -144,7 +144,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 UserDto userDto = ((AuthDto) auth.getPrincipal()).getUser();
                 User user = ModelUtils.convert(userDto, new User());
                 user.setId(null);
-                CmmUtils.writeJson(Response.success(user), res);
+                SpringUtils.writeJson(Response.success(user), res);
             }
         };
 	}
@@ -172,7 +172,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 if (null == auth) {
                 	int status = HttpServletResponse.SC_BAD_REQUEST;
                 	res.setStatus(status);
-                	CmmUtils.writeJson(Response.fail(status, "no authentication"), res);
+                	SpringUtils.writeJson(Response.fail(status, "no authentication"), res);
                 } else {
                 	// logout success
                 }
