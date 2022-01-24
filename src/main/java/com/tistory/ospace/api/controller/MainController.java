@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tistory.ospace.annotation.timelog.TimeLog;
 import com.tistory.ospace.api.controller.model.ModelUtils;
 import com.tistory.ospace.api.controller.model.User;
 import com.tistory.ospace.api.util.SpringUtils;
@@ -18,6 +19,7 @@ public class MainController {
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
 
+	@TimeLog
 	@GetMapping("/api/me")
     @ResponseBody
     public User me() {

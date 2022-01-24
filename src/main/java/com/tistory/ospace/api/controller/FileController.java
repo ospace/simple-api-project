@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tistory.ospace.annotation.timelog.TimeLog;
 import com.tistory.ospace.api.controller.model.FileRS;
 import com.tistory.ospace.api.controller.model.ListRS;
 import com.tistory.ospace.api.controller.model.ModelUtils;
@@ -44,6 +45,7 @@ public class FileController{
      * @throws IOException 
      * @throws FileNotFoundException   
      */
+    @TimeLog
     @GetMapping(value="/{filepath}/{filename}")
     public void get(@PathVariable("filepath") String filepath, @PathVariable("filename") String filename, HttpServletResponse res) throws IOException {
         logger.debug("get begin: filepath[{}] filename[{}]", filepath, filename);
@@ -68,6 +70,7 @@ public class FileController{
      * @return
      * @throws IOException  
      */
+    @TimeLog
     @GetMapping(value="/download/{filepath}/{filename}")
     public void download(@PathVariable("filepath") String filepath, @PathVariable("filename") String filename, HttpServletRequest req, HttpServletResponse res) throws IOException {
         logger.debug("download begin: filepath[{}] filename[{}] filenames[{}]", filepath, filename);
@@ -84,6 +87,7 @@ public class FileController{
      * @return
      * @throws  
      */
+    @TimeLog
     @PostMapping
     @Transactional
     public ListRS<?> upload(@RequestParam("file") List<MultipartFile> files) throws ParseException {
@@ -105,6 +109,7 @@ public class FileController{
      * @throws IOException 
      * @throws ParseException 
      */
+    @TimeLog
     @DeleteMapping(value="/{filepath}/{filename}")
     public void delete(@PathVariable("filepath") String filepath, @PathVariable("filename") String filename) throws IOException {
         logger.debug("delete begin: filepath[{}] filename[{}]", filepath, filename);

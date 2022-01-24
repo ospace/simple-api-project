@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tistory.ospace.annotation.timelog.TimeLog;
 import com.tistory.ospace.api.controller.model.ListRS;
 import com.tistory.ospace.api.controller.model.ModelUtils;
 import com.tistory.ospace.api.controller.model.SearchKeyword;
@@ -42,6 +43,7 @@ public class UserController{
 	 * @return
 	 * @throws  
 	 */
+	@TimeLog
 	@GetMapping
 	public ListRS<?> get(SearchKeyword searchKeyword) {
 		logger.info("get begin: searchKeyword[{}]", searchKeyword);
@@ -61,6 +63,7 @@ public class UserController{
 	 * @return
 	 * @throws  
 	 */
+	@TimeLog
 	@ResponseBody
 	@GetMapping(value="/{id}")
 	public User getOne(@PathVariable("id") Integer id) {
@@ -78,6 +81,7 @@ public class UserController{
 	 * @return
 	 * @throws  
 	 */
+	@TimeLog
 	@PostMapping
 	public void create(@Valid @RequestBody User user) {
 		User userClone = (User) user.clone();
@@ -95,6 +99,7 @@ public class UserController{
 	 * @return
 	 * @throws  
 	 */
+	@TimeLog
 	@PutMapping
 	public void update(@RequestBody User user) {
 		User userClone = (User) user.clone();
@@ -112,6 +117,7 @@ public class UserController{
 	 * @return
 	 * @throws ParseException 
 	 */
+	@TimeLog
 	@DeleteMapping(value="/{id}")
 	public void delete(@PathVariable("id") Integer id) {
 		logger.info("delete begin: id[{}]", id);

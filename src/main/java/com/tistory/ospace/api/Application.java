@@ -6,7 +6,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+import com.tistory.ospace.annotation.timelog.EnableTimeLog;
 
+@EnableTimeLog
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 	private static Class<?> app = Application.class;
