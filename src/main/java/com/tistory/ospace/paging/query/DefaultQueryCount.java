@@ -6,10 +6,14 @@ import java.util.regex.Pattern;
 
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tistory.ospace.paging.PagingHelper;
 
 public class DefaultQueryCount extends QueryTemplate {
+	private static final Logger logger = LoggerFactory.getLogger(DefaultQueryCount.class);
+	
 	private final static Pattern RE_SELECT = Pattern.compile("\\b(SELECT|FROM)\\b");
 	
 	@Override
@@ -37,12 +41,14 @@ public class DefaultQueryCount extends QueryTemplate {
 			}
 		}
 		
+		logger.debug("onBoundSql: begin[{}] end[{}] sql[{}]", begin, end, sql);
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append(sql.substring(0, begin))
 			.append(" COUNT(0) ")
 			.append(sql.substring(end, sql.length()));
 		
-		return new BoundSql(ms.getConfiguration(), sql, bs.getParameterMappings(), param);
+		return new BoundSql(ms.getConfiguration(), sb.toString(), bs.getParameterMappings(), param);
 	}
 
 }
