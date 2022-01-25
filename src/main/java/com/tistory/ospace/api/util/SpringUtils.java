@@ -81,8 +81,10 @@ public class SpringUtils {
 	
 	public static void applyUser(BaseDto dto) {
 		if (null == dto) return;
-		
-		Integer userId = getUserId();
+		applyUser(dto, getUserId());
+	}
+	
+	public static void applyUser(BaseDto dto, Integer userId) {
 		dto.setModifier(userId);
 		dto.setCreator(userId);
 	}

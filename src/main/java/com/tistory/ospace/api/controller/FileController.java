@@ -29,7 +29,7 @@ import com.tistory.ospace.api.repository.dto.FileDto;
 import com.tistory.ospace.api.service.FileService;
 import com.tistory.ospace.common.DataUtils;
 
-
+@TimeLog
 @RestController
 @RequestMapping("/file")
 public class FileController{
@@ -45,7 +45,6 @@ public class FileController{
      * @throws IOException 
      * @throws FileNotFoundException   
      */
-    @TimeLog
     @GetMapping(value="/{filepath}/{filename}")
     public void get(@PathVariable("filepath") String filepath, @PathVariable("filename") String filename, HttpServletResponse res) throws IOException {
         logger.debug("get begin: filepath[{}] filename[{}]", filepath, filename);
@@ -70,7 +69,6 @@ public class FileController{
      * @return
      * @throws IOException  
      */
-    @TimeLog
     @GetMapping(value="/download/{filepath}/{filename}")
     public void download(@PathVariable("filepath") String filepath, @PathVariable("filename") String filename, HttpServletRequest req, HttpServletResponse res) throws IOException {
         logger.debug("download begin: filepath[{}] filename[{}] filenames[{}]", filepath, filename);
@@ -87,7 +85,6 @@ public class FileController{
      * @return
      * @throws  
      */
-    @TimeLog
     @PostMapping
     @Transactional
     public ListRS<?> upload(@RequestParam("file") List<MultipartFile> files) throws ParseException {
@@ -109,7 +106,6 @@ public class FileController{
      * @throws IOException 
      * @throws ParseException 
      */
-    @TimeLog
     @DeleteMapping(value="/{filepath}/{filename}")
     public void delete(@PathVariable("filepath") String filepath, @PathVariable("filename") String filename) throws IOException {
         logger.debug("delete begin: filepath[{}] filename[{}]", filepath, filename);

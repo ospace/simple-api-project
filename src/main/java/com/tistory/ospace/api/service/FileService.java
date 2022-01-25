@@ -43,8 +43,12 @@ public class FileService {
 	@Autowired
 	private FileRepository fileRepo;
 	
-	@Transactional
 	public FileDto upload(MultipartFile mf) {
+		return upload(mf, SpringUtils.getUserId());
+	}
+	
+	@Transactional
+	public FileDto upload(MultipartFile mf,Integer userId) {
 		if (null == mf || mf.isEmpty()) return null;
 		
 		FileDto file = newFileDto(mf);
@@ -55,7 +59,7 @@ public class FileService {
 			throw new RuntimeException(file.getOrgFilename() + " upload failed: ", e);
 		}
 		
-		SpringUtils.applyUser(file);
+		SpringUtils.applyUser(file, userId);
 		fileRepo.insert(file);
 		
 		return file;

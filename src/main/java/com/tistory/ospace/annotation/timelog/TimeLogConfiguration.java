@@ -18,6 +18,8 @@ import org.springframework.aop.support.annotation.AnnotationClassFilter;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.tistory.ospace.common.DataUtils;
+
 //@Configuration
 public class TimeLogConfiguration extends AbstractPointcutAdvisor implements IntroductionAdvisor/*, BeanFactoryAware*/ {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TimeLogConfiguration.class);
@@ -29,29 +31,30 @@ public class TimeLogConfiguration extends AbstractPointcutAdvisor implements Int
 	class AnnotationPointcut implements Pointcut {
 		private final MethodMatcher methodMatcher;
 		private final ClassFilter   classFilter;
+		private Class<? extends Annotation> annotationClazz = null;
 		
 		public AnnotationPointcut(Class<? extends Annotation> annotationClazz) {
-			this.methodMatcher = new AnnotationMethodMatcher(annotationClazz);
+			this.annotationClazz = annotationClazz;
+			this.methodMatcher = new AnnotationMethodMatcher(annotationClazz) {
+			    @Override
+		    	public boolean matches(Method method, Class<?> targetClass) {
+			    	return hasAnnotation(targetClass) || super.matches(method, targetClass);
+			    }
+			};
 			this.classFilter = new AnnotationClassFilter(annotationClazz, true) {
 				@Override
 				public boolean matches(Class<?> clazz) {
-					return super.matches(clazz) || hasAnnotationMethod(clazz, annotationClazz);
-				}
-				
-				private boolean hasAnnotationMethod(Class<?> clazz, Class<? extends Annotation> annotaion) {
-					try {
-						if (null != AnnotationUtils.findAnnotation(clazz, annotaion)) return true;
-						for(Method it : clazz.getMethods()) {
-							Annotation annotation = AnnotationUtils.findAnnotation(it, annotaion);
-							if(null != annotation) return true;
-						}
-						return false;
-					} catch(Exception e) {
-						LOGGER.warn("AnnotationClassFilter.exception : {}", e.getMessage(), e);
-						throw e;
-					}
+					return super.matches(clazz) || null != DataUtils.findFirst(clazz.getMethods(), it->hasAnnotation(it));
 				}
 			};
+		}
+		
+		boolean hasAnnotation(Method method) {
+			return null != AnnotationUtils.findAnnotation(method, this.annotationClazz);
+		}
+		
+		boolean hasAnnotation(Class<?> clazz) {
+			return null != AnnotationUtils.findAnnotation(clazz, this.annotationClazz);
 		}
 
 
